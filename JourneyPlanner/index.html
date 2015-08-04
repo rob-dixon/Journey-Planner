@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html ng-app="journey-planner">
+<head>
+    <title>Journey Planner</title>
+    <style>
+        .centeredleft {
+            position: fixed;
+            top: 50%;
+            left: 20%;
+            margin-top: -300px;
+        }
+
+        .centeredRight {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -300px;
+        }
+
+
+        body {
+            font-size: 18pt;
+        }
+
+        button {
+            font-size: 18pt;
+        }
+
+        .err {
+            color: red;
+        }
+
+        .connection {
+            color: orange;
+        }
+
+        .station-list {
+            z-index: 10;
+            border: 1px solid black;
+            font-size: 12pt;
+            background-color: white;
+            padding-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div ng-controller="MainController">
+
+        <div class="centeredleft">
+            <h2>TFL Journey Planner</h2>
+
+            <table>
+                <tr>
+                    <td>From</td>
+                    <td>
+                        <input type="text" ng-model="fromStation"/>
+                        <div ng-show="displayStations(fromStation)" style="position: absolute" class="station-list">
+                            <ul>
+                                <li ng-repeat="x in filteredStations = ( stations | filter:fromStation)">
+                                    <a href ng-click="setStation(x,'fromStation')">{{x}}</a>
+                                </li>
+                                <li ng-hide="filteredStations.length">No stations found</li>
+                            </ul>
+                        </div>
+                        <span class="err">{{fromStationErr}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>To</td>
+                    <td>
+                        <input type="text" ng-model="toStation" />
+                        <div ng-show="displayStations(toStation)" style="position: absolute" class="station-list">
+                            <ul>
+                                <li ng-repeat="x in filteredStations = ( stations | filter:toStation)">
+                                    <a href ng-click="setStation(x,'toStation')">{{x}}</a>
+                                </li>
+                                 <li ng-hide="filteredStations.length">No stations found</li>
+                            </ul>
+                        </div>
+                        <span class="err">{{toStationErr}}</span>
+                    </td>
+                </tr>
+            </table>
+
+            <a href ng-click="moreOptions = !moreOptions">More options</a>
+
+            <div ng-show="moreOptions">
+                <table>
+                    <tr>
+                        <td>Via</td>
+                        <td>
+                            <input type="text" ng-model="viaStation" />
+                            <div ng-show="displayStations(viaStation)" style="position: absolute" class="station-list">
+                                <ul>
+                                    <li ng-repeat="x in filteredStations = ( stations | filter:viaStation)">
+                                        <a href ng-click="setStation(x,'viaStation')">{{x}}</a>
+                                    </li>
+                                    <li ng-hide="filteredStations.length">No stations found</li>
+                                </ul>
+                            </div>
+                            <span class="err">{{viaStationErr}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Excluding</td>
+                        <td>
+                            <input type="text" ng-model="excludingStation" />
+                            <div ng-show="displayStations(excludingStation)" style="position: absolute" class="station-list">
+                                <ul>
+                                    <li ng-repeat="x in filteredStations = ( stations | filter:excludingStation)">
+                                        <a href ng-click="setStation(x,'excludingStation')">{{x}}</a>
+                                    </li>
+                                     <li ng-hide="filteredStations.length">No stations found</li>
+                                </ul>
+                            </div>
+                            <span class="err">{{excludingStationErr}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <button ng-click="getJourney()">Plan my journey</button>
+            </div>
+
+            <span ng-model="errMsg" class="err"></span>
+        </div>
+
+         <div class="centeredRight">
+        <div id="results" ng-show="results.length">
+            <h3>Journey Results</h3>
+            <ul>
+                <li ng-repeat="x in results">{{ x.Station + ', ' + x.LineToStation }}
+                  
+                    <div ng-show="x.ConnectionInfo" class="connection">
+                        Change at: {{ x.ConnectionInfo.StationChangeFrom }} ({{ x.ConnectionInfo.LineChangeFrom }})
+                        to: {{ x.ConnectionInfo.StationChangeTo }} ({{ x.ConnectionInfo.LineChangeTo }})
+                          
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+        
+     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="app/app.js"></script>
+</body>
+</html>
