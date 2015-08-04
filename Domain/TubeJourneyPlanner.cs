@@ -5,15 +5,14 @@ using System.Linq;
 
 namespace Domain
 {
-    public class TubeJourneyPlanner : ITubeJourneyPlanner
+    public class TubeJourneyPlanner : IJourneyPlanner
     {
         private readonly Graph tubeGraph;
-        private readonly RouteCalculator routeCalculator;
+        private RouteCalculator routeCalculator;
         
         public TubeJourneyPlanner()
         {
-            this.tubeGraph = new TubeGraphFactory().CreateTubeGraph();
-            this.routeCalculator = new RouteCalculator();
+            this.tubeGraph = new TubeGraphFactory().CreateTubeGraph();            
         }
 
         public List<RouteResult> FindByFewestStations(TubeJourneyRequest tubeJourneyRequest)
@@ -30,14 +29,14 @@ namespace Domain
 
         public List<RouteResult> FindByShortestDistance(TubeJourneyRequest tubeJourneyRequest)
         {
+            this.routeCalculator = new ShortestDistanceCalculator();
             var allRoutes = this.routeCalculator.CalculateRoute(this.tubeGraph, tubeJourneyRequest.StartStation, tubeJourneyRequest.FinishStation);
-            
-            var bestRoute = new List<RouteResult>();
 
-            bestRoute.Add(allRoutes[allRoutes.Count-1]);
-            var finishStation = allRoutes[allRoutes.Count - 1].FromStation;
+            var bestRoute = new List<RouteResult> { allRoutes[0] };
+                       
+            var finishStation = allRoutes[0].FromStation;
 
-            for (var i = allRoutes.Count - 2; i >= 0; i--)
+            for (var i = 1; i < allRoutes.Count; i++)
             {
                 if (allRoutes[i].ToStation == finishStation)
                 {

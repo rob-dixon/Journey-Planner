@@ -10,6 +10,8 @@ namespace Domain.TubeModel
         public string Name { get; private set; }
  
         public double DistanceFromStart { get; set; } // moved to StationNode
+
+        public double TimeFromStart { get; set; }
        
         public Node(string name)
         {

@@ -35,12 +35,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="ITubeJourneyPlanner.cs" />
+    <Compile Include="IJourneyPlanner.cs" />
     <Compile Include="JourneyRequest.cs" />
     <Compile Include="RouteResult.cs" />
     <Compile Include="TubeJourneyPlanner.cs" />
     <Compile Include="TubeJourneyResult.cs" />
+    <Compile Include="TubeModel\Dijkstra\FastestTimeCalculator.cs" />
+    <Compile Include="TubeModel\Dijkstra\FewestStationsCalculator.cs" />
     <Compile Include="TubeModel\Dijkstra\RouteCalculator.cs" />
+    <Compile Include="TubeModel\Dijkstra\ShortestDistanceCalculator.cs" />
     <Compile Include="TubeModel\NodeResult.cs" />
     <Compile Include="TubeModel\Graph.cs" />
     <Compile Include="TubeModel\Node.cs" />

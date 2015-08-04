@@ -5,7 +5,7 @@ namespace JourneyPlanner.Controllers
 {
     public class JourneyPlannerController : ApiController
     {
-        private readonly ITubeJourneyPlanner tubeJourneyPlanner;
+        private readonly IJourneyPlanner tubeJourneyPlanner;
 
         public JourneyPlannerController()
         {

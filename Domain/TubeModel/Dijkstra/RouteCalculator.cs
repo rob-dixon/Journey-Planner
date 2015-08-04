@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 namespace Domain.TubeModel.Dijkstra
 {
     
-    public class RouteCalculator
+    public abstract class RouteCalculator
     {
-        private readonly List<RouteResult> routeResults;
+        protected readonly List<RouteResult> routeResults;
         
         public RouteCalculator()
         {
             this.routeResults = new List<RouteResult>();
         }
 
-        public virtual List<RouteResult> CalculateRoute(Graph graph, string startingNode, string finishStation)
+        public List<RouteResult> CalculateRoute(Graph graph, string startingNode, string finishStation)
         {
             if (!graph.Nodes.ContainsKey(startingNode))
             {
@@ -27,7 +27,7 @@ namespace Domain.TubeModel.Dijkstra
             this.Initialise(graph, startingNode);
             this.ProcessGraph(graph, finishStation);
 
-            return this.routeResults.OrderBy(x => x.TimeFromStart).ToList();
+            return this.routeResults.OrderByDescending(x => x.TimeFromStart).ToList();
         }
 
         private void Initialise(Graph graph, string startingNode)
@@ -45,7 +45,7 @@ namespace Domain.TubeModel.Dijkstra
             this.routeResults.Clear();
         }
 
-        protected virtual void ProcessGraph(Graph graph, string finishStation)
+        private void ProcessGraph(Graph graph, string finishStation)
         {
             var finished = false;
             var queue = graph.Nodes.Values.ToList();
@@ -70,36 +70,7 @@ namespace Domain.TubeModel.Dijkstra
             }
         }
 
-        protected virtual bool ProcessNode(Node node, List<Node> queue, string finishStation)
-        {
-            // get all the connections for the node being processed
-            var connections = node.Connections.Where(c => queue.Contains(c.Target)).OrderBy(x => x.Distance);
-
-            // iterate through all the connections from this node
-            foreach (var connection in connections)
-            {
-                // calculate the 
-                var distance = node.DistanceFromStart + connection.Distance;
-                if (distance < connection.Target.DistanceFromStart)
-                {
-                    connection.Target.DistanceFromStart = distance;
-
-                    this.routeResults.Add(new RouteResult
-                    {
-                        ConnectionMedium = connection.ConnectionMedium.ToString(),
-                        FromStation = node.Name,
-                        ToStation = connection.Target.Name,
-                        TimeFromStart = distance
-                    });
-
-                    if (connection.Target.Name == finishStation)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
+        protected abstract bool ProcessNode(Node node, List<Node> queue, string finishStation);
+      
     }
 }

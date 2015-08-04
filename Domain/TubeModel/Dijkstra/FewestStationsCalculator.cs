@@ -2,11 +2,11 @@
 
 namespace Domain.TubeModel.Dijkstra
 {
-    public class FewestStationsCalculator : RouteBaseCalculator
+    public class FewestStationsCalculator : RouteCalculator
     {
-        public override List<Node> CalculateRoute(Graph graph, string startingNode, string finishStation)
+        protected override bool ProcessNode(Node node, List<Node> queue, string finishStation)
         {
-            return base.CalculateRoute(graph, startingNode, finishStation);
+            throw new System.NotImplementedException();
         }
     }
 }

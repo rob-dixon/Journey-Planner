@@ -2,7 +2,7 @@
 
 namespace Domain
 {
-    public interface ITubeJourneyPlanner
+    public interface IJourneyPlanner
     {
         List<RouteResult> FindByFewestStations(TubeJourneyRequest tubeJourneyRequest);
 
