@@ -6,6 +6,8 @@
 
     app.controller('MainController', ['$scope', 'dataService', function ($scope, dataService) {
 
+        $scope.errMsg = '';
+
         function init() {
             dataService.getAllStations().then(function (data) {
                 var stations = data.data;
@@ -24,10 +26,9 @@
            
             dataService.getJourney($scope.fromStation, $scope.toStation, $scope.viaStation, $scope.excludingStation).then(function (data) {
                 var journey = data.data;
-                $scope.results = journey.RouteResults;
+                $scope.results = journey.RouteResult;
             }, function (err) {
-                console.log(err);
-                $scope.errMsg = "An error has occurred, please try again.";
+                $scope.errMsg = "An error has occurred. " + err.statusText + " : " + err.data;
             });
         };
 
@@ -53,7 +54,7 @@
 
         function verifyStations() {
 
-            $scope.fromStationErr = '';
+            /*$scope.fromStationErr = '';
             $scope.toStationErr = '';
             $scope.viaStationErr = '';
             $scope.excludingStationErr = '';
@@ -88,7 +89,8 @@
                 }
             }
 
-            return numErrors === 0;
+            return numErrors === 0;*/
+            return true;
         }
 
         init();
@@ -109,9 +111,10 @@
         }
 
         function getJourney(fromStation, toStation, viaStation, excludingStation) {
-            viaStation = viaStation || '-';
-            excludingStation = excludingStation || '-';
-            return $http.get('/api/journeyplanner/' + fromStation + '/' + toStation + '/' + viaStation + '/' + excludingStation);
+            viaStation = viaStation || '';
+            excludingStation = excludingStation || '';
+            return $http.get('/api/journeyplanner?startStation=' + fromStation + '&finishStation=' + toStation + '&viaStation=' + viaStation
+                + '&excludingStation=' + excludingStation);
         }
 
     }
