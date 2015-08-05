@@ -3,7 +3,7 @@ namespace Domain
 {
     public class RouteResult
     {
-        public double TimeFromStart { get; set; }
+        public double DistanceFromStart { get; set; }
 
         public string FromStation { get; set; }
         

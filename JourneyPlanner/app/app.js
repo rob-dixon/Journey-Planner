@@ -25,7 +25,8 @@
             dataService.getJourney($scope.fromStation, $scope.toStation, $scope.viaStation, $scope.excludingStation).then(function (data) {
                 var journey = data.data;
                 $scope.results = journey.RouteResults;
-            }, function () {
+            }, function (err) {
+                console.log(err);
                 $scope.errMsg = "An error has occurred, please try again.";
             });
         };

@@ -4,10 +4,15 @@ using System.Linq;
 
 namespace Domain.TubeModel.Dijkstra
 {
-    public class FastestTimeCalculator : RouteCalculator
+    public class FastestTimeCalculator : RouteCalculatorBase
     {
 
-        protected override bool ProcessNode(Node node, List<Node> queue, string finishStation)
+        protected override bool ProcessNode(Node node, List<Node> queue, string finishStation, string excludingStation)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override List<RouteResult> ExtractResults()
         {
             throw new NotImplementedException();
         }

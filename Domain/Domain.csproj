@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
@@ -42,7 +43,7 @@
     <Compile Include="TubeJourneyResult.cs" />
     <Compile Include="TubeModel\Dijkstra\FastestTimeCalculator.cs" />
     <Compile Include="TubeModel\Dijkstra\FewestStationsCalculator.cs" />
-    <Compile Include="TubeModel\Dijkstra\RouteCalculator.cs" />
+    <Compile Include="TubeModel\Dijkstra\RouteCalculatorBase.cs" />
     <Compile Include="TubeModel\Dijkstra\ShortestDistanceCalculator.cs" />
     <Compile Include="TubeModel\NodeResult.cs" />
     <Compile Include="TubeModel\Graph.cs" />

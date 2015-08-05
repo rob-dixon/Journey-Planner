@@ -20,19 +20,23 @@ namespace ConsoleApplication1
 
             var tubeJourneyPlanner = new TubeJourneyPlanner();
 
-            var bestRoute = tubeJourneyPlanner.FindByShortestDistance(new TubeJourneyRequest(Constants.TottenhamCourtRoad, Constants.Monument)).ToList();
+            var bestRoute = tubeJourneyPlanner.FindByShortestDistance(new TubeJourneyRequest(
+                                                                            Constants.TottenhamCourtRoad, 
+                                                                            Constants.Embankment,
+                                                                            viaStation:Constants.Temple))
+                                                                            .ToList();
 
             // start at end of routes, loop down to find route back
 
 
-            for (var i = 0; i < bestRoute.Count; i++)
+            foreach (RouteResult t in bestRoute)
             {
-               Console.WriteLine(" {0} - {1} - {2} - {3}", bestRoute[i].FromStation, 
-                                                            bestRoute[i].ToStation, 
-                                                            bestRoute[i].TimeFromStart, 
-                                                            bestRoute[i].ConnectionMedium);
+                Console.WriteLine(" {0} - {1} - {2} - {3}", t.FromStation, 
+                    t.ToStation, 
+                    t.DistanceFromStart, 
+                    t.ConnectionMedium);
             }
-             
+
 
             Console.ReadKey();
         }
