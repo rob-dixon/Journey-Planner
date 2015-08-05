@@ -23,7 +23,7 @@ namespace ConsoleApplication1
             var bestRoute = tubeJourneyPlanner.FindByShortestDistance(new TubeJourneyRequest(
                                                                             Constants.TottenhamCourtRoad, 
                                                                             Constants.Embankment,
-                                                                            viaStation:Constants.Temple))
+                                                                            viaStation:Constants.Blackfriars))
                                                                             .ToList();
 
             // start at end of routes, loop down to find route back

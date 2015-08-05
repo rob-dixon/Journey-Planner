@@ -29,8 +29,8 @@ namespace Domain
         public List<RouteResult> FindByShortestDistance(TubeJourneyRequest tubeJourneyRequest)
         {
             var bestRoute = new List<RouteResult>();
-            //var viaCheck = !string.IsNullOrEmpty(tubeJourneyRequest.ViaStation);
-            //var originalFinishStation = tubeJourneyRequest.FinishStation;
+            var viaCheck = !string.IsNullOrEmpty(tubeJourneyRequest.ViaStation);
+            var originalStartStation = tubeJourneyRequest.StartStation;
 
             if (tubeJourneyRequest.StartStation == tubeJourneyRequest.FinishStation)
             {
@@ -38,33 +38,32 @@ namespace Domain
             }
 
             this.routeCalculator = new ShortestDistanceCalculator();
-
-            /*
-            // if having to go via a station calculate first the best route to the via station (i.e. make via the finish station)
-            // w
-            // then make via station the start route and work from via station to original finish station
+            
+            
+            // if via then first get best route from via to finish (last part of route)
             if (viaCheck)
             {
-                tubeJourneyRequest.FinishStation = tubeJourneyRequest.ViaStation;
-                bestRoute = this.routeCalculator.CalculateRoute(this.tubeGraph, 
-                                                            tubeJourneyRequest.StartStation, 
+                var lastRoute = this.routeCalculator.CalculateRoute(this.tubeGraph,
+                                                            tubeJourneyRequest.ViaStation,
                                                             tubeJourneyRequest.FinishStation,
                                                             tubeJourneyRequest.ExcludingStation);
-                tubeJourneyRequest.FinishStation = originalFinishStation;
+                // get best route from start
+                var bestRouteToVia = this.routeCalculator.CalculateRoute(this.tubeGraph,
+                                                            originalStartStation,
+                                                            tubeJourneyRequest.ViaStation,
+                                                            tubeJourneyRequest.FinishStation);
 
-                bestRoute.AddRange(this.routeCalculator.CalculateRoute(this.tubeGraph, 
-                                                            tubeJourneyRequest.ViaStation, 
-                                                            tubeJourneyRequest.FinishStation,
-                                                            tubeJourneyRequest.ExcludingStation));
-                return bestRoute;
-
+                bestRoute.AddRange(bestRouteToVia);
+                bestRoute.AddRange(lastRoute);
             }
-            */
-                
-            bestRoute = this.routeCalculator.CalculateRoute(this.tubeGraph, 
-                                                            tubeJourneyRequest.StartStation, 
+            else
+            {
+                bestRoute = this.routeCalculator.CalculateRoute(this.tubeGraph,
+                                                            tubeJourneyRequest.StartStation,
                                                             tubeJourneyRequest.FinishStation,
                                                             tubeJourneyRequest.ExcludingStation);
+            }
+                       
             
             
             return bestRoute;
